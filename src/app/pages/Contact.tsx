@@ -1,5 +1,6 @@
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 import { useState } from 'react';
+import emailjs from '@emailjs/browser'; // 👈 Import d'EmailJS
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -9,47 +10,49 @@ export function Contact() {
     subject: '',
     message: '',
   });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
-  // 1. Préparer les données
-  const formData = new FormData();
-  formData.append("access_key", "TA_CLE_ACCESS_KEY_ICI"); // 👈 Remplace par ta clé
-  formData.append("name", formData.name);
-  formData.append("email", formData.email);
-  formData.append("phone", formData.phone);
-  formData.append("subject", formData.subject);
-  formData.append("message", formData.message);
+    // Correspondance avec les variables de ton template EmailJS Contact
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      from_phone: formData.phone || 'Non renseigné',
+      subject: formData.subject,
+      message: formData.message,
+      to_email: 'contact@metallik.tech', // Optionnel si défini dans le template
+    };
 
-  // 2. Envoyer à Web3Forms
-  try {
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      alert("Votre message a été envoyé avec succès !");
-      // Réinitialiser le formulaire
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: "",
+    // 👇 METTRE TES CLÉS ICI (Service ID et Clé Publique sont les mêmes, seul le Template ID change)
+    emailjs
+      .send(
+        "service_4svzcfn",          // 👈 Le même Service ID que pour le devis
+        "template_u0gq1qc", // 👈 Le NOUVEAU Template ID pour la page contact
+        templateParams,
+        "3K2uqLe07ozLJVCXD"          // 👈 Ta clé publique
+      )
+      .then(() => {
+        alert('Votre message a été envoyé avec succès !');
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: '',
+        });
+      })
+      .catch((error) => {
+        alert("Une erreur est survenue lors de l'envoi.");
+        console.error("Erreur EmailJS:", error);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
-    } else {
-      alert("Erreur lors de l'envoi. Veuillez réessayer.");
-      console.error("Erreur Web3Forms:", data);
-    }
-  } catch (error) {
-    alert("Une erreur est survenue. Veuillez vérifier votre connexion.");
-    console.error("Erreur réseau:", error);
-  }
-};
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -94,7 +97,7 @@ export function Contact() {
                   </div>
                   <div>
                     <h3 className="mb-1">Email</h3>
-                    <p className="text-muted-foreground">contact@metallik.com</p>
+                    <p className="text-muted-foreground">contact@metallik.tech</p>
                   </div>
                 </div>
 
@@ -215,9 +218,10 @@ export function Contact() {
 
                 <button
                   type="submit"
-                  className="w-full md:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-4 transition-colors"
+                  disabled={isSubmitting}
+                  className="w-full md:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-4 transition-colors disabled:opacity-50"
                 >
-                  Envoyer le message
+                  {isSubmitting ? 'Envoi en cours...' : 'Envoyer le message'}
                 </button>
               </form>
             </div>
