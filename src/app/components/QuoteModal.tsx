@@ -1,6 +1,7 @@
 import { X, CheckCircle, AlertCircle, Loader } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 interface QuoteModalProps {
   isOpen: boolean;
@@ -25,53 +26,58 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
-    try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
-          subject: `Demande de devis - ${formData.companyName} - ${formData.projectType}`,
-          from_name: formData.contactName,
-          reply_to: formData.email,
-          Entreprise: formData.companyName,
-          Contact: formData.contactName,
-          Email: formData.email,
-          Téléphone: formData.phone,
-          "Type de projet": formData.projectType,
-          "Description du projet": formData.projectDescription,
-          "Budget estimé": formData.budget || 'Non spécifié',
-          "Délai souhaité": formData.timeline,
-          "Spécifications techniques": formData.specifications || 'Aucune',
-          "Niveau de priorité": formData.urgency,
-        }),
-      });
+    const currentDate = new Date().toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
 
-      const data = await response.json();
+    const templateParams = {
+      from_name: formData.contactName,
+      entreprise: formData.companyName,
+      from_email: formData.email,
+      from_phone: formData.phone,
+      type_projet: formData.projectType,
+      budget: formData.budget || 'Non renseigné',
+      delai: formData.timeline,
+      dossier: 'Non renseigné',
+      description: formData.projectDescription,
+      specifications: formData.specifications || 'Aucune spécification particulière',
+      priorite: formData.urgency,
+      date: currentDate,
+    };
 
-      if (data.success) {
+    // 👇 C'EST ICI QU'IL FAUT METTRE TES CLÉS 👇
+    emailjs
+      .send(
+        "service_4svzcfn",       // Remplace par ton Service ID
+        "template_u0gq1qc",      // Remplace par ton Template ID
+        templateParams,
+        "3K2uqLe07ozLJVCXD"       // Remplace par ta clé publique
+      )
+    // 👆 FIN DE LA ZONE À MODIFIER 👆
+      .then(() => {
         setSubmitStatus('success');
         setTimeout(() => {
           setFormData({ ...emptyForm });
           setSubmitStatus('idle');
           onClose();
-        }, 2500);
-      } else {
+        }, 3000);
+      })
+      .catch((error) => {
+        console.error("Erreur EmailJS:", error);
         setSubmitStatus('error');
-      }
-    } catch {
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
-    }
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   const handleChange = (

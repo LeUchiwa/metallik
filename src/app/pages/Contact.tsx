@@ -10,18 +10,46 @@ export function Contact() {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission here
-    alert('Votre message a été envoyé avec succès !');
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: '',
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  // 1. Préparer les données
+  const formData = new FormData();
+  formData.append("access_key", "TA_CLE_ACCESS_KEY_ICI"); // 👈 Remplace par ta clé
+  formData.append("name", formData.name);
+  formData.append("email", formData.email);
+  formData.append("phone", formData.phone);
+  formData.append("subject", formData.subject);
+  formData.append("message", formData.message);
+
+  // 2. Envoyer à Web3Forms
+  try {
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
     });
-  };
+
+    const data = await response.json();
+
+    if (data.success) {
+      alert("Votre message a été envoyé avec succès !");
+      // Réinitialiser le formulaire
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+    } else {
+      alert("Erreur lors de l'envoi. Veuillez réessayer.");
+      console.error("Erreur Web3Forms:", data);
+    }
+  } catch (error) {
+    alert("Une erreur est survenue. Veuillez vérifier votre connexion.");
+    console.error("Erreur réseau:", error);
+  }
+};
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
