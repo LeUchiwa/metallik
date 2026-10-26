@@ -15,6 +15,11 @@ import p2_2 from '../../imports/p2-2.png';
 import p2_3 from '../../imports/p2-3.png';
 import p2_4 from '../../imports/p2-4.png';
 
+import p3_1 from '../../imports/p3-1.png';
+import p3_2 from '../../imports/p3-2.png';
+import p3_3 from '../../imports/p3-3.png';
+import p3_4 from '../../imports/p3-4.png';
+
 import p4_1 from '../../imports/p4-1.png';
 import p4_2 from '../../imports/p4-2.png';
 import p4_3 from '../../imports/p4-3.png';
@@ -39,6 +44,10 @@ import p9_2 from '../../imports/p9-2.png';
 import p9_3 from '../../imports/p9-3.png';
 import p9_4 from '../../imports/p9-4.png';
 
+import p11_1 from '../../imports/p11-1.png';
+import p11_2 from '../../imports/p11-2.png';
+import p11_3 from '../../imports/p11-3.png';
+import p11_4 from '../../imports/p11-4.png';
 // 4-image carousel
 function ProjectCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [current, setCurrent] = useState(0);
@@ -121,6 +130,15 @@ export function Projects() {
       description:
         "Préfabrication, Montage, Couverture et Bardage d'un Hangar à usage d'atelier de maintenance pour ADC.",
     },
+{
+      title: 'Hangar métallique de 1000m²',
+      category: 'Maintenance industrielle',
+      location: 'Douala',
+      date: 'Sept. - Nov. 2021',
+      images: [p3_1, p3_2, p3_3, p3_4],
+      description:
+        "Montage, Couverture et Bardage d’un Hangar métallique de 1000m², de Hauteur 8m à usage d’usine de production pour SWISS AFRICAN COMPANY",
+    },
     {
       title: 'Charpentes métalliques de 300m²',
       category: 'Métallerie décorative',
@@ -165,6 +183,16 @@ export function Projects() {
       images: [p9_1, p9_2, p9_3, p9_4],
       description:
         "Montage d'un Hangar métallique de 3024m² à usage d'usine de production pour TAMPICO.",
+    },
+
+{
+      title: 'Hangar métallique de 2736m²',
+      category: 'Tuyauterie industrielle',
+      location: 'Douala',
+      date: 'Otc. - Jan. 2023',
+      images: [p11_1, p11_2, p11_3, p11_4],
+      description:
+        "Préfabrication, Montage, couverture et bardage d’un Hangar métallique de 2736m²pour LANDY SHOES SARL",
     },
   ];
 

@@ -72,21 +72,28 @@ export function Home() {
 
   const testimonials = [
     {
-      name: 'Jean-Pierre Marchand',
-      company: 'Directeur Technique, IndustriaCorp',
-      text: 'METALLIK a réalisé la charpente métallique de notre nouveau site de production. Leur professionnalisme et respect des délais ont été exemplaires.',
+      name: 'M. Hamana Pascal',
+      company: 'Directeur Général de Landy Shoes SARL',
+      text: 'METALLIK SARL a réalisé nos travaux dans le respect des délais et du cahier des charges. L\'équipe est sérieuse, la qualité de finition est irréprochable et la communication est restée fluide du début à la fin. Je recommande vivement leurs services.',
       rating: 5,
     },
     {
-      name: 'Sophie Durand',
-      company: 'Architecte, Atelier Design+',
-      text: 'Une équipe compétente qui a su concrétiser notre vision architecturale avec des solutions métalliques innovantes et esthétiques.',
+      name: 'M. Kemayou Philippe',
+      company: 'Directeur Général de Meddia SARL',
+      text: 'Nous avons confié à METALLIK SARL un projet exigeant, et le résultat dépasse nos attentes. Leur professionnalisme, la solidité des ouvrages et leur sens du détail font la différence. C\'est un partenaire de confiance pour notre entreprise.',
       rating: 5,
     },
     {
-      name: 'Marc Lefebvre',
-      company: 'Gérant, Logistique Express',
-      text: 'Service impeccable pour la maintenance de nos équipements industriels. Intervention rapide et prix compétitifs.',
+      name: 'Mme Kadji Odette',
+      company: 'Directrice Générale de Faeli SARL',
+      text: 'Ce qui m\'a le plus marquée chez METALLIK SARL, c\'est leur écoute et leur réactivité. Ils ont compris notre besoin, proposé des solutions adaptées et livré un travail durable et soigné. Je n\'hésiterai pas à refaire appel à eux.',
+      rating: 5,
+    },
+
+{
+      name: 'M. Tientcheu Jean Claude',
+      company: 'Directeur Général de UTC Cameroun',
+      text: 'Chez UTC Cameroun, nous exigeons rigueur et fiabilité. METALLIK SARL a su répondre à ces exigences avec un travail de grande qualité, une équipe compétente et un suivi de chantier exemplaire. Une entreprise sur laquelle on peut compter.',
       rating: 5,
     },
   ];
@@ -141,7 +148,7 @@ export function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              Excellence en Métallurgie
+              Excellence en Structures métalliques
             </motion.h1>
             <motion.p 
               className="text-xl mb-8 text-gray-200 leading-relaxed"
